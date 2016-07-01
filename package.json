@@ -1,0 +1,17 @@
+{
+  "name": "cli-snippet",
+  "version": "0.0.1",
+  "description": "A command line tool for creating snipperts",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "author": "ronen-e <alter.ronen@gmail.com>",
+  "license": "Apache-2.0",
+  "bin": {
+    "snippet": "./index.js"
+  }
+}
