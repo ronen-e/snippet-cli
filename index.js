@@ -10,8 +10,8 @@ program
     .option('-p, --password <password>', 'The user\'s password')
     .action(function(file) {
         co(function *() {
-            var username = yield prompt('username:');
-            var password = yield prompt('password:');
+            var username = yield prompt('username: ');
+            var password = yield prompt('password: ');
 
             request
                 .post('https://api.bitbucket.org/2.0/snippets')
@@ -19,8 +19,22 @@ program
                 .attach('file', file)
                 .set('Accept', 'application/json')
                 .end(function(err, res) {
-                    var link = res.body.links.html.href;
-                    console.log('Snippet created: %s', link);
+                    if (!err && res.ok) {
+                        var link = res.body.links.html.href;
+                        console.log('Snippet created: %s', link);
+                        process.exit(0);
+                    }
+
+                    var errorMessage;
+                    if (res && res.status === 401) {
+                        errorMessage = 'Authentication failed! Bad username or password';
+                    } else if (err) {
+                        errorMessage = err;
+                    } else {
+                        errorMessage = res.text;
+                    }
+                    console.error(errorMessage);
+                    process.exit(1);
                 });
         });
     })
