@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 var co = require('co');
 var prompt = require('co-prompt');
 var program = require('commander');
