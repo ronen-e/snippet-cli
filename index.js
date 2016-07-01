@@ -1,4 +1,5 @@
 #!/usr/bin/env node --harmony
+var chalk = require('chalk');
 var request = require('superagent');
 var co = require('co');
 var prompt = require('co-prompt');
@@ -21,7 +22,7 @@ program
                 .end(function(err, res) {
                     if (!err && res.ok) {
                         var link = res.body.links.html.href;
-                        console.log('Snippet created: %s', link);
+                        console.log(chalk.bold.cyan('Snippet created: ') + link);
                         process.exit(0);
                     }
 
@@ -33,7 +34,7 @@ program
                     } else {
                         errorMessage = res.text;
                     }
-                    console.error(errorMessage);
+                    console.error(chalk.red(errorMessage));
                     process.exit(1);
                 });
         });
