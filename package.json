@@ -1,6 +1,14 @@
 {
   "name": "cli-snippet",
   "version": "0.0.1",
+  "engines" : {
+      "node" : "v5.3.0"
+  },
+  "preferGlobal": true,
+  "bugs": {
+      "url": "https://github.com/ronen-e/snippet-cli/issues",
+      "email": "alter.ronen@gmail.com"
+  },
   "description": "A command line tool for creating snippets",
   "main": "index.js",
   "directories": {
@@ -9,8 +17,13 @@
   "scripts": {
     "test": "test"
   },
+  "repository" :
+  {
+      "type" : "git",
+      "url" : "https://github.com/ronen-e/snippet-cli"
+  },
   "author": "ronen-e <alter.ronen@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "(MIT OR Apache-2.0)",
   "bin": {
     "snippet": "./index.js"
   },
