@@ -1,25 +1,11 @@
 #!/usr/bin/env node --harmony
 var fs = require('fs');
-var progressBar = require('progress');
+var ProgressBar = require('progress');
 var chalk = require('chalk');
 var request = require('superagent');
 var co = require('co');
 var prompt = require('co-prompt');
 var program = require('commander');
-
-var fileSize = fs.statSync(file).size;
-var fileStream = fs.createReadStream(file);
-var barOpts = {
-    clear: true,
-    width: 20,
-    total: fileSize,
-};
-
-var bar = new ProgressBar(' uploading [:bar] :percent :etas', barOpts);
-
-fileStream.on('data', function(chunk) {
-    bar.tick(chunk.length);
-});
 
 program
     .arguments('<file>')
@@ -28,7 +14,21 @@ program
     .action(function(file) {
         co(function *() {
             var username = yield prompt('username: ');
-            var password = yield prompt('password: ');
+            var password = yield prompt.password('password: ');
+
+            var fileSize = fs.statSync(file).size;
+            var fileStream = fs.createReadStream(file);
+            var barOpts = {
+                clear: true,
+                width: 20,
+                total: fileSize,
+            };
+
+            var bar = new ProgressBar(' uploading [:bar] :percent :etas', barOpts);
+
+            fileStream.on('data', function(chunk) {
+                bar.tick(chunk.length);
+            });
 
             request
                 .post('https://api.bitbucket.org/2.0/snippets')
