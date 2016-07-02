@@ -1,9 +1,25 @@
 #!/usr/bin/env node --harmony
+var fs = require('fs');
+var progressBar = require('progress');
 var chalk = require('chalk');
 var request = require('superagent');
 var co = require('co');
 var prompt = require('co-prompt');
 var program = require('commander');
+
+var fileSize = fs.statSync(file).size;
+var fileStream = fs.createReadStream(file);
+var barOpts = {
+    clear: true,
+    width: 20,
+    total: fileSize,
+};
+
+var bar = new ProgressBar(' uploading [:bar] :percent :etas', barOpts);
+
+fileStream.on('data', function(chunk) {
+    bar.tick(chunk.length);
+});
 
 program
     .arguments('<file>')
@@ -17,7 +33,7 @@ program
             request
                 .post('https://api.bitbucket.org/2.0/snippets')
                 .auth(username, password)
-                .attach('file', file)
+                .attach('file', fileStream)
                 .set('Accept', 'application/json')
                 .end(function(err, res) {
                     if (!err && res.ok) {
